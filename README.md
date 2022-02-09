@@ -1,6 +1,6 @@
 - 👋 Hi, I’m @bdeniz1997
 - 👀 I’m interested in making games
-- 🌱 I’m currently learning C# and hlsl
+- 🌱 I’m currently learning C++, C# and hlsl
 - 💞️ I’m looking to collaborate on ...
 - 📫 You can reach me via my e-mail. berkay_dnz1997@hotmail.com
 
