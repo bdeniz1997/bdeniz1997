@@ -9,36 +9,68 @@ because right now, by looks it is fine but when you try to step on it, you'll pr
 so, here goes my solution:
 
 the goal here is to move the colliders along with the deformed vertices. we need to set a couple of indices for each collider for reference.
-and if those indices are moved, we move the collider accordingly.
+and if those indicecs are moved, we move the collider accordingly.
 
 right now i'm just thinking of moving them, rather than making small calculations like
 dividing a box collider into little boxes, or resizing. i just want to move or rotate the collider according to the indices.
 we'll think about that after we figure out how to move the colliders.
 
-so we need to have references: 
-	1 on the center of the collider.
-	2 or maybe 4 on the 
+1) so we need to have references: 
+	on the corners of the box. so, the thing we need to do is: find through vertices and check for the closest point to the corner.
 	
 	
-so, the dots on the picture. we can have 3 dots there for the transform and rotation.
+2) so, the dots on the picture. we can have 3 dots there for the transform and rotation.
 1st = top left corner
 2nd = top right corner
 3rd bottom left corner
 
-rotation is going to be :
+2.1) rotation is going to be :
 	forward = top left - bottom left.
 	up = top left - top right
 forward and backwards may vary depending on the colliders face.
 
-position:
+2.2) position:
 	i think we're going to make this based on how 3 of them moved. 
 	we'll get the diff vector as: after - before = diffVector;
 	diffVector[0~2] as we have 3 of them.
 	well sum em up and divide by 3. this is going to be an average thing.
 	
-ill try to code this and lets see if it works.
+//////////////////////////////////////////
+i'll try to code this and lets see if it works.
 
 */
-void OnCollisionEnter(Collision other){
+Vector3[,] colliderPoints;
+
+void Start(){
+	SetPointsForColliders();
+	colliderPoints = new Vector3[transform.ChildCount,3];
+}
+
+void SetPointsForColliders(){
+	for(int i=0;i<transform.childCount;i++){
+		Transform collidTransform = transform.GetChild(i);
+		BoxCollider collid = collidTransform.GetComponent<BoxCollider>();
+		Vector3 size = collid.bounds.size;
+		colliderPoints[i,0] = collidTransform.TransformPoint(new Vector3(-size.x,-size.y,-size.z)*0.5f));
+		colliderPoints[i,1] = collidTransform.TransformPoint(new Vector3(size.x,-size.y,-size.z)*0.5f));
+		colliderPoints[i,2] = collidTransform.TransformPoint(new Vector3(-size.x,-size.y,-size.z)*0.5f));
+		//make sure to show them in Gizmo Editor to see where they go :)
+	}	
+}
+
+
+//find a way to know which collider is gonna get affected.
+//meshdeform.cs would inform us with that.
+public void adjustCollider(Transform hitColliderTransform, int index){
+	//I'll assume that the only thing that hits is cannon.
+	adjustPosition(hitColliderTransform, index);
+	adjustRotation(hitColliderTransform, index);
+}
+
+private void adjustPosition(Transform hitColliderTransform, int index){
+	
+}
+
+private void adjustRotation(){
 	
 }
