@@ -18,9 +18,25 @@ we'll think about that after we figure out how to move the colliders.
 so we need to have references: 
 	1 on the center of the collider.
 	2 or maybe 4 on the 
+	
+	
+so, the dots on the picture. we can have 3 dots there for the transform and rotation.
+1st = top left corner
+2nd = top right corner
+3rd bottom left corner
 
+rotation is going to be :
+	forward = top left - bottom left.
+	up = top left - top right
+forward and backwards may vary depending on the colliders face.
 
-
+position:
+	i think we're going to make this based on how 3 of them moved. 
+	we'll get the diff vector as: after - before = diffVector;
+	diffVector[0~2] as we have 3 of them.
+	well sum em up and divide by 3. this is going to be an average thing.
+	
+ill try to code this and lets see if it works.
 
 */
 void OnCollisionEnter(Collision other){
