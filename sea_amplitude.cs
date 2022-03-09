@@ -3,11 +3,9 @@ The idea behind this is to get the world height with the biggest amplitude and s
 and use that Y value to change the sea amplitude throughout the world.
 depending on if its deep or shallow.
 lets say the y( heigtValue) is between (0~-500) wave amplitude is going to be between (0.31~ 7 or sth)
-an inverse lerp.
+an inverse lerp and a lerp.
 float amp = inverseLerp(0,-500,heightVal);
-and a animation curve.
-amp = 0 -> finalAmp = 0.31
-amp = 1 -> finalAmp = 7
+float realAmp = Lerp(0.31f,7,amp);
 
 and so on.
 
