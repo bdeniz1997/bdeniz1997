@@ -39,7 +39,8 @@ forward and backwards may vary depending on the colliders face.
 i'll try to code this and lets see if it works.
 
 */
-Vector3[,] colliderPoints;
+public Vector3[,] colliderPoint;
+public int[,] coliderVertindex;
 
 void Start(){
 	SetPointsForColliders();
@@ -47,17 +48,36 @@ void Start(){
 }
 
 void SetPointsForColliders(){
-	for(int i=0;i<transform.childCount;i++){
-		Transform collidTransform = transform.GetChild(i);
-		BoxCollider collid = collidTransform.GetComponent<BoxCollider>();
-		Vector3 size = collid.bounds.size;
-		colliderPoints[i,0] = collidTransform.TransformPoint(new Vector3(-size.x,-size.y,-size.z)*0.5f));
-		colliderPoints[i,1] = collidTransform.TransformPoint(new Vector3(size.x,-size.y,-size.z)*0.5f));
-		colliderPoints[i,2] = collidTransform.TransformPoint(new Vector3(-size.x,-size.y,-size.z)*0.5f));
-		//make sure to show them in Gizmo Editor to see where they go :)
-	}	
+	for (int i = 0; i < colliders.childCount; i++){
+            Transform collidTransform = colliders.GetChild(i);
+            BoxCollider collid = collidTransform.GetComponent<BoxCollider>();
+            Vector3 size = collid.bounds.size;
+            size.x *= 0.5f;
+            size.z *= 2f;
+            
+            colliderPoint[i,0] = collid.center + new Vector3(-size.x, -size.y, size.z) * 0.5f;
+            colliderPoint[i,1] = collid.center + new Vector3(size.x, size.y, size.z) * 0.5f;
+            colliderPoint[i,2] = collid.center + new Vector3(-size.x, size.y, size.z) * 0.5f;
+
+            //make sure to show them in Gizmo Editor to see where they go :)
+        }	
 }
 
+void SetIndicesForColliders(){
+	//search the closest. use a compute shader maybe.
+}
+
+private void OnDrawGizmos() {
+	//each one has a different color to be able to see it.
+        Color[] clrs = { Color.magenta, Color.yellow, Color.cyan };
+        for (int i = 0; i < colliders.childCount; i++) {
+            Transform collidTransform = colliders.GetChild(i);
+            for (int j = 0; j < 3; j++) {
+                Gizmos.color = clrs[j];
+                Gizmos.DrawSphere(collidTransform.TransformPoint(colliderPoint[i, j]), 0.1f);
+            }
+        }
+    }
 
 //find a way to know which collider is gonna get affected.
 //meshdeform.cs would inform us with that.
