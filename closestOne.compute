@@ -1,0 +1,84 @@
+﻿// Each #kernel tells which function to compile; you can have many kernels
+#pragma kernel CSMain
+#define PI 3.14159265358979323846
+// Create a RenderTexture with enableRandomWrite flag and set it
+// with cs.SetTexture
+RWStructuredBuffer <float3> positions;
+RWStructuredBuffer <float3> MeshData;
+
+float4 _WaveA;
+float4 _WaveB;
+float4 _WaveC;
+float4 _WaveD;
+float4 _WaveE;
+float4 _WaveF;
+float4 _WaveG;
+
+float _Time;
+
+float3 GerstnerWaves (float4 wave, float3 p){
+
+    float steepness= wave.z;
+    float wavelength= wave.w; 
+
+    float k = 2 * PI / wavelength;
+    float c = sqrt(9.8 / k);
+
+    float2 d = normalize(wave.xy);
+
+    float f = k * (dot(d,p.xz) - c *_Time);//normals
+    float a= (steepness/k);
+    
+    float3 result =(d.x * (a * cos(f)), a * sin(f), d.y * (a * cos(f)));
+    return result ;
+
+}
+
+[numthreads(1,1,1)]
+void CSMain (uint3 id : SV_DispatchThreadID)
+{
+    //int index = id.y*241+id.x;
+    int index=id.x;
+  
+
+    //output
+
+  float dist= 999;
+    float3 closest= MeshData[255];
+    for(uint a=0; a<58000;a++){
+
+        float posdist = distance(positions[index],MeshData[a]);
+        if(posdist<dist ){
+            dist= posdist;
+            closest=MeshData[a];
+            if(posdist<2){
+                break;
+            }
+        }
+    }
+
+// float3 gridPoint =  positions[index];
+//     float3 p= gridPoint;
+//     p += GerstnerWaves(_WaveA, gridPoint);
+//     p += GerstnerWaves(_WaveB, gridPoint);
+//     p += GerstnerWaves(_WaveC, gridPoint);
+//     p += GerstnerWaves(_WaveD, gridPoint);
+//     p += GerstnerWaves(_WaveE, gridPoint);
+//     p += GerstnerWaves(_WaveF, gridPoint);
+//     p += GerstnerWaves(_WaveG, gridPoint);
+
+    //position.xyz+=(_Time/100);
+    //float3 val= ResultBuffer[id.x];
+    //float3 gridPoint= ResultBuffer[id.x];
+    
+
+    ///ResultBuffer[id.x] = p.xyz;
+
+    
+
+    //wave vertex
+
+
+    //positions[index]= p.xyz;
+    positions[index] = closest;
+}
