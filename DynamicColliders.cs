@@ -39,6 +39,7 @@ forward and backwards may vary depending on the colliders face.
 i'll try to code this and lets see if it works.
 
 */
+Vector3[] verts;
 public Vector3[,] colliderPoint;
 public int[,] coliderVertindex;
 
@@ -63,8 +64,18 @@ void SetPointsForColliders(){
         }	
 }
 
-void SetIndicesForColliders(){
+void SetIndicesForColliders(){ //make this one work in a compute shader because it seems slow.
 	//search the closest. use a compute shader maybe.
+	for (int i = 0; i < colliders.childCount; i++) {
+	Transform collidTransform = colliders.GetChild(i);
+		for (int j = 0; j < 3; j++) {
+			for(int k = 0; k < verts.Lenght; k++){
+				if(colliderPoint[i,j] == verts[k]){
+					colliderVertIndex[i,j] = k;
+				}
+			}
+		}
+	}
 }
 
 private void OnDrawGizmos() {
