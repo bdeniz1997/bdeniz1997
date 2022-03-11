@@ -41,6 +41,7 @@ i'll try to code this and lets see if it works.
 */
 Vector3[] verts;
 public Vector3[,] colliderPoint;
+public Vector3[,] closestPoint;
 public int[,] coliderVertindex;
 
 void Start(){
@@ -64,14 +65,22 @@ void SetPointsForColliders(){
         }	
 }
 
-void SetIndicesForColliders(){ //make this one work in a compute shader because it seems slow.
+void SetIndicesForColliders(){
+	
+}
+
+void SetClosestIndicesAndVerticesForColliders(){ //make this one work in a compute shader because it seems slow.
 	//search the closest. use a compute shader maybe.
+	float closestDist=float.max;
 	for (int i = 0; i < colliders.childCount; i++) {
 	Transform collidTransform = colliders.GetChild(i);
 		for (int j = 0; j < 3; j++) {
 			for(int k = 0; k < verts.Lenght; k++){
-				if(colliderPoint[i,j] == verts[k]){
-					colliderVertIndex[i,j] = k;
+				float distBetween = Vector3.Distance(colliderPoint[i,j],verts[k]);
+				if(distBetween < closestDist){
+					closestDist = distBetween;
+					closestPoint[i,k] = verts[k];
+					colliderVertIndex[i,k]=k;
 				}
 			}
 		}
