@@ -107,10 +107,26 @@ public void adjustCollider(Transform hitColliderTransform, int index){
 	adjustRotation(hitColliderTransform, index);
 }
 
-private void adjustPosition(Transform hitColliderTransform, int index){
-	
+public class colliderMeshVert{
+	public Vector3[] points;	
+	public Vector3[] OnCollidPoints;	
+	public int[] indices;	
 }
 
-private void adjustRotation(){
-	
+private void adjustPosition(colliderMeshVert c_collid){
+	Vector3 total=Vector3.Zero;
+	for(int j=0;j<3;j++){
+		total+= meshVerts[c_collid.indices[j]] - origVerts[c_collid.indices[j]];
+	}
+	total *=0.3333f;
+	c_collid.transform.position+= total;
+	// we dont need onCollid Points or Points. i think just the index is enough. but we'll see.
+}
+
+private void adjustRotation(colliderMeshVert c_collid){
+	//2nd - 1st = forward.
+	//3rd - 1st = upwards.
+	Vector3 forward = (meshVerts[c_collid.indices[1]] -meshVerts[c_collid.indices[0]]).normalized;
+	Vector3 upwards = (meshVerts[c_collid.indices[2]] -meshVerts[c_collid.indices[0]]).normalized;
+	c_collid.transform.rotation = Quaternion.LookRotation(forward,upwards);
 }
