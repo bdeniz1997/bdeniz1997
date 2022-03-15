@@ -130,3 +130,21 @@ private void adjustRotation(colliderMeshVert c_collid){
 	Vector3 upwards = (meshVerts[c_collid.indices[2]] -meshVerts[c_collid.indices[0]]).normalized;
 	c_collid.transform.rotation = Quaternion.LookRotation(forward,upwards);
 }
+
+private void check_rotate_function(){
+	//lets say it has 3 points on corner and where its been changed.
+	BoxCollider bc=GetComponent<BoxCollider>();
+	Vector3 size = bc.bounds.size *0.5f;
+	
+	Vector[] pos = new Vector3[3];
+	pos[0]= transform.TransformPoint(bc.center + size.y); // upper
+	pos[1]= transform.TransformPoint(bc.center + size.x);
+	pos[2]= transform.TransformPoint(bc.center);
+	
+	//vector3[] deformedEdges :d
+	// well have them as public 
+	Vector3 forward = (deformedEdges[1] -deformedEdges[0]).normalized;
+	Vector3 upwards = (pdeformedEdgesos[2] -deformedEdges[0]).normalized;
+	transform.rotation = Quaternion.LookRotation(forward,upwards);
+	
+}
