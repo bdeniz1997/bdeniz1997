@@ -23,4 +23,20 @@ this looks promising but i can't say the same about the performance. lolz.
 whatever lets go.
 
 
+-----3---
+
+create another simplified concave mesh.
+but it needs to be with vertex less than 255.
+
+its gonna be concave. we'll do it. and it wont be convex.
+we'll make it convex.
+
+then, the collider is gonna be generated off of that mesh.
+but we'll update the actual mesh as well,
+but use this mesh to convert it into the mesh colliders collider.
+we need to hide this thing, so we'll use it as a depth mask as well.
+that's 2 birds in one stone. 
+
+lets do that first!
+
 */
